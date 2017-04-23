@@ -1,0 +1,21 @@
+﻿  stdafx.cpp
+  Player.cpp
+  Map.cpp
+  main.cpp
+  System.cpp
+  SkinModelData.cpp
+c:\github\directxlesson_2\内積の課題_00\gametemplate\game\lib\skinmodeldata.cpp(268): warning C4316: 'D3DXFRAME_DERIVED': object allocated on the heap may not be aligned 16
+  SkinModel.cpp
+  Input.cpp
+c:\github\directxlesson_2\内積の課題_00\gametemplate\game\lib\input.cpp(27): warning C4244: '=': conversion from 'int' to 'FLOAT', possible loss of data
+c:\github\directxlesson_2\内積の課題_00\gametemplate\game\lib\input.cpp(28): warning C4244: '=': conversion from 'int' to 'FLOAT', possible loss of data
+c:\github\directxlesson_2\内積の課題_00\gametemplate\game\lib\input.cpp(48): warning C4244: 'argument': conversion from 'FLOAT' to 'int', possible loss of data
+  EffectManager.cpp
+  Camera.cpp
+  Animation.cpp
+  GameCamera.cpp
+  game.cpp
+  Enemy.cpp
+  Bullet.cpp
+  Generating Code...
+  game.vcxproj -> C:\GitHub\DirectXLesson_2\内積の課題_00\GameTemplate\Debug\game.exe

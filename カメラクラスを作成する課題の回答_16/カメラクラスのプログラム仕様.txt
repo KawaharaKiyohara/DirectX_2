@@ -1,0 +1,24 @@
+カメラクラスの最低限のプログラム仕様。各自で必要であれば拡張してかまわない。
+また関数名なども各自で変更してもかまわない。
+
+・メンバ変数に下記を保持する。カメラの視点、注視点、上方向、ビュー行列、プロジェクション行列を保持する。
+    D3DXVECTOR3 m_position;		//カメラの視点。
+	D3DXVECTOR3 m_target;		//カメラの注視点。
+	D3DXMATRIX	m_viewMatrix;	//カメラ行列。    D3DXVECTOR3 m_up;			//カメラの上方向。
+
+	D3DXMATRIX	m_projMatrix;	//プロジェクション行列。
+
+・メンバ関数は下記を保持する。
+　　Update関数
+　　　ビュー行列、プロジェクション行列の更新を行う。
+    SetPosition関数
+　　　カメラの視点を設定する関数。
+　　SetTarget関数
+　　　カメラの注視点を設定する関数。
+　　SetUp関数
+　　　カメラの上方向を設定する関数。
+　　GetViewMatrix関数
+　　　ビュー行列を取得する関数。
+　　GetProjectionMatrix関数
+　　　プロジェクション行列を取得する関数。
+　　
