@@ -7,23 +7,31 @@
 //-----------------------------------------------------------------------------
 // グローバル変数。
 //-----------------------------------------------------------------------------
+////////////////////////////////////////////////
+// DirectXのシステム関係の変数
+////////////////////////////////////////////////
 LPDIRECT3D9             g_pD3D = NULL;		
 LPDIRECT3DDEVICE9       g_pd3dDevice = NULL;
+
+////////////////////////////////////////////////
+// モデル表示に関係する変数。
+////////////////////////////////////////////////
 ID3DXEffect*			g_pEffect = NULL;	
-
-D3DXMATRIX				g_worldMatrix;		//ワールド行列。モデルローカル空間から、ワールド空間に変換する行列。
-D3DXMATRIX				g_rotationMatrix;	//回転行列。法線を回すために必要なので別途用意。]
-
+D3DXMATRIX				g_worldMatrix;				//ワールド行列。モデルローカル空間から、ワールド空間に変換する行列。
 LPD3DXMESH				g_pMesh = NULL;
-LPDIRECT3DTEXTURE9*	 	g_pMeshTextures = NULL; 	// Textures for our mesh
-DWORD              	 	g_dwNumMaterials = 0L;   	// Number of mesh materials
+LPDIRECT3DTEXTURE9*	 	g_pMeshTextures = NULL; 	// テクスチャ。
+DWORD              	 	g_dwNumMaterials = 0L;   	// マテリアルの数。
 
-
-static const int		LIGHT_NUM = 4;
+////////////////////////////////////////////////
+// ライトに関係する変数。
+////////////////////////////////////////////////
 D3DXVECTOR4 			g_diffuseLightDirection[LIGHT_NUM];	//ライトの方向。
 D3DXVECTOR4				g_diffuseLightColor[LIGHT_NUM];		//ライトの色。
 D3DXVECTOR4				g_ambientLight;						//環境光
 
+////////////////////////////////////////////////
+// カメラに関係する変数。
+////////////////////////////////////////////////
 D3DXMATRIX				g_viewMatrix;						//ビュー行列。
 D3DXMATRIX				g_projectionMatrix;					//プロジェクション行列。
 
@@ -78,20 +86,9 @@ void InitD3D(HWND hWnd)
 // Name: Cleanup()
 // Desc: Releases all previously initialized objects
 //-----------------------------------------------------------------------------
-VOID Cleanup()
+void Cleanup()
 {
-	if (g_pMeshTextures != NULL) {
-		for (int i = 0; i < g_dwNumMaterials; i++) {
-			g_pMeshTextures[i]->Release();
-		}
-		delete[] g_pMeshTextures;
-	}
-	if (g_pMesh != NULL) {
-		g_pMesh->Release();
-	}
-	if (g_pEffect != NULL) {
-		g_pEffect->Release();
-	}
+	CleanupTiger();
 	if (g_pd3dDevice != NULL)
 		g_pd3dDevice->Release();
 
@@ -117,10 +114,11 @@ void UpdateLight()
 	//環境光。
 	g_ambientLight = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
 }
+
 //-----------------------------------------------------------------------------
-// Name: 描画処理。
+// Name: シーンを描画処理。
 //-----------------------------------------------------------------------------
-VOID Render()
+void Render()
 {
 	// 画面をクリア。
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 255), 1.0f, 0);
@@ -132,39 +130,8 @@ VOID Render()
 		// Turn on the zbuffer
 		g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
 		
-		//シェーダー適用開始。
-		g_pEffect->SetTechnique("SkinModel");
-		g_pEffect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
-		g_pEffect->BeginPass(0);
-
-		//定数レジスタに設定するカラー。
-		D3DXVECTOR4 color( 1.0f, 0.0f, 0.0f, 1.0f);
-		//ワールド行列の転送。
-		g_pEffect->SetMatrix("g_worldMatrix", &g_worldMatrix);
-		//ビュー行列の転送。
-		g_pEffect->SetMatrix("g_viewMatrix", &g_viewMatrix);
-		//プロジェクション行列の転送。
-		g_pEffect->SetMatrix("g_projectionMatrix", &g_projectionMatrix);
-		//ライトの向きを転送。
-		g_pEffect->SetVectorArray("g_diffuseLightDirection", g_diffuseLightDirection, LIGHT_NUM );
-		//ライトのカラーを転送。
-		g_pEffect->SetVectorArray("g_diffuseLightColor", g_diffuseLightColor, LIGHT_NUM );
-		//環境光を設定。
-		g_pEffect->SetVector("g_ambientLight", &g_ambientLight);
-
-		g_pEffect->CommitChanges();						//この関数を呼び出すことで、データの転送が確定する。描画を行う前に一回だけ呼び出す。
-		
-		// Meshes are divided into subsets, one for each material. Render them in
-        // a loop
-        for( DWORD i = 0; i < g_dwNumMaterials; i++ )
-        {
-			g_pEffect->SetTexture("g_diffuseTexture", g_pMeshTextures[i]);
-            // Draw the mesh subset
-            g_pMesh->DrawSubset( i );
-        }
-        
-		g_pEffect->EndPass();
-		g_pEffect->End();
+		//虎を描画。
+		RenderTiger();
 
 		// End the scene
 		g_pd3dDevice->EndScene();
@@ -205,10 +172,13 @@ void InitCamera()
 	D3DXMatrixPerspectiveFovLH(&g_projectionMatrix, D3DX_PI / 4, 1.0f, 0.1f, 10000.0f);
 }
 /*!-----------------------------------------------------------------------------
- *@brief	Xファイルを読み込んでジオメトリを初期化。
+ *@brief	虎のXファイルを読み込んでジオメトリを初期化。
  -----------------------------------------------------------------------------*/
-void InitGeometry()
+void InitTigerGeometry()
 {
+	//ワールド行列を単位行列に初期化する。
+	D3DXMatrixIdentity(&g_worldMatrix);
+	
     LPD3DXBUFFER pD3DXMtrlBuffer;
     //Xファイルのロード。
 	D3DXLoadMeshFromX( "Tiger.x", D3DXMESH_SYSTEMMEM,
@@ -231,6 +201,63 @@ void InitGeometry()
     // マテリアルバッファを解放。
     pD3DXMtrlBuffer->Release();
 }
+//-----------------------------------------------------------------------------
+// Name: 虎を描画。
+//-----------------------------------------------------------------------------
+void RenderTiger()
+{
+	//シェーダー適用開始。
+	g_pEffect->SetTechnique("SkinModel");
+	g_pEffect->Begin(NULL, D3DXFX_DONOTSAVESHADERSTATE);
+	g_pEffect->BeginPass(0);
+
+	//定数レジスタに設定するカラー。
+	D3DXVECTOR4 color( 1.0f, 0.0f, 0.0f, 1.0f);
+	//ワールド行列の転送。
+	g_pEffect->SetMatrix("g_worldMatrix", &g_worldMatrix);
+	//ビュー行列の転送。
+	g_pEffect->SetMatrix("g_viewMatrix", &g_viewMatrix);
+	//プロジェクション行列の転送。
+	g_pEffect->SetMatrix("g_projectionMatrix", &g_projectionMatrix);
+	//ライトの向きを転送。
+	g_pEffect->SetVectorArray("g_diffuseLightDirection", g_diffuseLightDirection, LIGHT_NUM );
+	//ライトのカラーを転送。
+	g_pEffect->SetVectorArray("g_diffuseLightColor", g_diffuseLightColor, LIGHT_NUM );
+	//環境光を設定。
+	g_pEffect->SetVector("g_ambientLight", &g_ambientLight);
+
+	g_pEffect->CommitChanges();						//この関数を呼び出すことで、データの転送が確定する。描画を行う前に一回だけ呼び出す。
+	
+	// Meshes are divided into subsets, one for each material. Render them in
+    // a loop
+    for( DWORD i = 0; i < g_dwNumMaterials; i++ )
+    {
+		g_pEffect->SetTexture("g_diffuseTexture", g_pMeshTextures[i]);
+        // Draw the mesh subset
+        g_pMesh->DrawSubset( i );
+    }
+    
+	g_pEffect->EndPass();
+	g_pEffect->End();
+}
+//-----------------------------------------------------------------------------
+// 虎に関係するオブジェクトのクリーンアップ。
+//-----------------------------------------------------------------------------
+void CleanupTiger()
+{
+	if (g_pMeshTextures != NULL) {
+		for (int i = 0; i < g_dwNumMaterials; i++) {
+			g_pMeshTextures[i]->Release();
+		}
+		delete[] g_pMeshTextures;
+	}
+	if (g_pMesh != NULL) {
+		g_pMesh->Release();
+	}
+	if (g_pEffect != NULL) {
+		g_pEffect->Release();
+	}
+}
 /*!-----------------------------------------------------------------------------
  *@brief	更新処理。
  -----------------------------------------------------------------------------*/
@@ -238,8 +265,7 @@ void Update()
 {
 }
 //-----------------------------------------------------------------------------
-// Name: wWinMain()
-// Desc: The application's entry point
+// エントリー関数。
 //-----------------------------------------------------------------------------
 INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 {
@@ -261,16 +287,15 @@ INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, INT)
 
 	// Direct3Dを初期化。
 	InitD3D(hWnd);
-	//モデルを初期化。
-	InitGeometry();
+	//虎のモデルを初期化。
+	InitTigerGeometry();
 	//エフェクトファイルのロード。
 	LoadEffectFile();
 	
+	//ライトの初期化。
 	ZeroMemory( g_diffuseLightDirection, sizeof(g_diffuseLightDirection) );
 	ZeroMemory( g_diffuseLightColor, sizeof(g_diffuseLightColor) );
-			
-	D3DXMatrixIdentity(&g_worldMatrix);
-	D3DXMatrixIdentity(&g_rotationMatrix);
+
 	//カメラの初期化。
 	InitCamera();
 	
