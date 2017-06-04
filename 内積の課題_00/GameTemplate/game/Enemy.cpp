@@ -72,6 +72,7 @@ bool Enemy::Update()
 			D3DXQuaternionRotationAxis(&qAdd, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), PI);
 			rotation *= qAdd;
 		}
+		//Question ‡@ ‚±‚±‚É‹–ìŠp‚Ì”»’è‚ğ‹Lq‚·‚éB
 		position += direction * 0.05f;
 
 	}
