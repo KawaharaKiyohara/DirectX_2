@@ -55,7 +55,7 @@ private:
 	GameCamera	gameCamera;			//ゲームカメラ。
 	Player		player;				//プレイヤー。
 	Map			map;				//地形。
-	CourceDef	courceDef;			//コース定義、
+
 };
 
 extern Game* game;

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Turn.h"
 
 class Player
 {
@@ -23,7 +22,7 @@ private:
 	D3DXQUATERNION rotation;		//‰ñ“]	
 	D3DXVECTOR3 currentDirection;	//Œ»İ‚Ì•ûŒüB
 	D3DXQUATERNION baseRot;
-	Light light;
-	Turn  turn;						//ù‰ñˆ—B
+	int currentCourceNodeNo = 0;
+	Light light;	
 };
 

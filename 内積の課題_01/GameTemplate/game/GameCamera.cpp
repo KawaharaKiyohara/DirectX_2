@@ -15,7 +15,7 @@ GameCamera::~GameCamera()
 void GameCamera::Start(Player* player)
 {
 	toEyePos.z = 10.0f;
-	toEyePos.y = 10.0f;
+	toEyePos.y = 2.0f;
 	targetOffset.y = 1.0f;
 	targetOffset.x = 0.0f;
 	camera.SetAspect(1280.0f / 720.0f);

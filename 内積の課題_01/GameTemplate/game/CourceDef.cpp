@@ -3,13 +3,9 @@
 
 
 
-//コース定義のデータ構造体。
-struct CourceDefData{
-	D3DXVECTOR3 startPos;		//始点。
-	D3DXVECTOR3 endPos;			//終点。
-};
+
 //コース定義のデータテーブル。
-static CourceDefData datas[] = {
+CourceDefData g_courceDatas[] = {
 	{
 		D3DXVECTOR3(0.000000f, 0.000000f, 0.000000f),
 		D3DXVECTOR3(0.000000f, 0.000000f, -36.480076f),
@@ -27,11 +23,4 @@ static CourceDefData datas[] = {
 		D3DXVECTOR3(170.723145f, 0.000000f, -196.723740f),
 	},
 };
-CourceDef::CourceDef()
-{
-}
 
-
-CourceDef::~CourceDef()
-{
-}
