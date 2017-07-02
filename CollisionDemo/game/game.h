@@ -37,17 +37,12 @@ public:
 	{
 		return &camera;
 	}
-	//•¨—ƒ[ƒ‹ƒh‚Ìæ“¾B
-	PhysicsWorld* GetPhysicsWorld()
-	{
-		return &physicsWorld;
-	}
+
 private:
 	D3DXVECTOR3 toCameraPos;
 	Camera camera;
 	Player player;
 	Map map;
-	PhysicsWorld physicsWorld;
 };
 
 extern Game* game;

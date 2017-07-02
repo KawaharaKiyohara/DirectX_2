@@ -39,3 +39,4 @@ public:
 	}
 };
 
+extern PhysicsWorld* g_physicsWorld;

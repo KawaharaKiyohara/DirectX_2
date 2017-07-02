@@ -12,7 +12,7 @@ MapChip::MapChip() :
 
 MapChip::~MapChip()
 {
-	game->GetPhysicsWorld()->RemoveRigidBody(&rigidBody);
+	g_physicsWorld->RemoveRigidBody(&rigidBody);
 }
 void MapChip::Init(SMapChipLocInfo& locInfo)
 {
@@ -55,7 +55,7 @@ void MapChip::Init(SMapChipLocInfo& locInfo)
 	//剛体を作成。
 	rigidBody.Create(rbInfo);
 	//作成した剛体を物理ワールドに追加。
-	game->GetPhysicsWorld()->AddRigidBody(&rigidBody);
+	g_physicsWorld->AddRigidBody(&rigidBody);
 
 }
 void MapChip::Update()

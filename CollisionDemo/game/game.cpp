@@ -16,6 +16,8 @@ Game::Game()
  */
 Game::~Game()
 {
+	delete g_physicsWorld;
+	g_physicsWorld = NULL;
 }
 /*!
  * @brief	ゲームが起動してから一度だけ呼ばれる関数。
@@ -23,7 +25,8 @@ Game::~Game()
 void Game::Start()
 {
 	//物理ワールドを初期化。
-	physicsWorld.Init();
+	g_physicsWorld = new PhysicsWorld;
+	g_physicsWorld->Init();
 	//カメラ初期化。
 	camera.Init();
 	camera.SetEyePt(D3DXVECTOR3(0.0f, 4.0f, 10.0f));
