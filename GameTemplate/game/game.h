@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include "Player.h"
-#include "Map.h"
 #include "myEngine/Physics/Physics.h"
 /*!
  * @brief	ゲームクラス。

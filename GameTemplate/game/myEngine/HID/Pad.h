@@ -7,15 +7,23 @@
 #include <XInput.h> // XInput API
 
 /*!
- * @brief	ゲームパッドクラス。
- */
+*@brief	パッドステート。
+*/
+struct PAD_STATE
+{
+	XINPUT_STATE state;
+	bool bConnected;
+};
+/*!
+* @brief	ゲームパッドクラス。
+*/
 class Pad
 {
 public:
 	/*!
-	 * @brief	仮想ボタン定義。
-	 */
-	enum EnButton{
+	* @brief	仮想ボタン定義。
+	*/
+	enum EnButton {
 		enButtonUp,			//!<上。
 		enButtonDown,		//!<下。
 		enButtonLeft,		//!<左。
@@ -35,16 +43,16 @@ public:
 		enButtonNum,		//!<ボタンの数。
 	};
 	/*!
-	 * @brief	コンストラクタ。
-	 */
+	* @brief	コンストラクタ。
+	*/
 	Pad();
 	/*!
-	 * @brief	デストラクタ。
-	 */
+	* @brief	デストラクタ。
+	*/
 	~Pad();
 	/*!
-	 * @brief	初期化。
-	 */
+	* @brief	初期化。
+	*/
 	void Update();
 	/*!
 	*@brief	ボタンのトリガー判定。
@@ -95,7 +103,7 @@ public:
 		return m_rStickY;
 	}
 private:
-	XINPUT_STATE	m_state;	//!<パッドステート。
+	PAD_STATE	m_state;	//!<パッドステート。
 	int m_padNo = 0;
 	int m_trigger[enButtonNum];	//!<trigger入力のフラグ。
 	int m_press[enButtonNum];	//!<press入力のフラグ。
