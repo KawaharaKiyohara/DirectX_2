@@ -186,7 +186,10 @@ void Model::Morphing(Model* morphTargetA, Model* morphTargetB, float rate)
 		///////////////////////////////////////////////////////////////////
 		//ここに頂点モーフの処理を記述する。
 		///////////////////////////////////////////////////////////////////
-		//次の頂点へ。
+		*vertexPos = (*targetVertexPos_A) * (1.0f - rate) 
+			       + (*targetVertexPos_B) * rate;
+	
+		//次の頂点へ0。
 		char* p = (char*)vertexPos;
 
 		p += stride;

@@ -51,6 +51,7 @@ public:
 	{
 		return gameCamera;
 	}
+
 private:
 	GameCamera	gameCamera;			//ゲームカメラ。
 	Player		player;				//プレイヤー。

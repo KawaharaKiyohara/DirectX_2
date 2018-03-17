@@ -40,7 +40,7 @@ void Player::Start()
 void Player::Update()
 {
 	animation.Update(1.0f / 60.f);
-	const float moveSpeed = 0.08f;
+	const float moveSpeed = 0.28f;
 	D3DXVECTOR3 moveDir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	//パス移動を行う。
 	//プレイヤーの座標をコース定義に射影していく。
@@ -50,13 +50,19 @@ void Player::Update()
 	D3DXVec3Normalize(&courceDir, &courceDir);
 	//プレイヤーがコース上のどの位置にいるかを調べる。
 	D3DXVECTOR3 playerPosInCourceNode = position - g_courceDatas[currentCourceNodeNo].startPos;
+
+
 	float t = D3DXVec3Dot(&playerPosInCourceNode, &courceDir);
+
 	//進行方向はコースの向き。
 	moveDir = courceDir;
-	bool isPossibleMove = true;
+	move = moveDir;
+	isPossibleMove = true;
 	if (t > len) {
 		//次のノードへ。
 		currentCourceNodeNo++;
+		isPossibleMove = false;
+		anglepos = position;
 		if (currentCourceNodeNo >= COURCE_NODE_NUM) {
 			//終端まで移動した。
 			//移動はもうできない。

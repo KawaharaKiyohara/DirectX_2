@@ -73,11 +73,32 @@ bool Enemy::Update()
 			rotation *= qAdd;
 		}
 		//Question ① ここに視野角の判定を記述する。
+		D3DXVECTOR3 toPlayer = 
+			game->GetPlayer()->GetPosition() 
+			- position;
+		//敵からプレイヤーに向かうベクトルを正規化する。
+		D3DXVec3Normalize(&toPlayer, &toPlayer);
+		//二つのベクトルのなす角cosシータを求める。
+		float angle = D3DXVec3Dot(&toPlayer, &direction);
+		//cosθからラジアン単位の角度に戻す。
+		angle = acos(angle);
+		if (fabsf(angle) < D3DXToRadian(45.0f)) {
+			//視野角90度以内になったらので
+			//発見状態に遷移する。
+			state = eState_Find;
+		}
 		position += direction * 0.05f;
 
 	}
 	else if (state == eState_Find) {
 		//発見状態。
+		//Question2　プレイヤーを追いかける処理を追加する。
+		D3DXVECTOR3 toPlayer = 
+			game->GetPlayer()->GetPosition() 
+			- position;
+		D3DXVec3Normalize(&toPlayer, &toPlayer);
+		position += toPlayer * 0.1f;
+
 	}
 	return true;
 }

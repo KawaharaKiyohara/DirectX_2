@@ -5,9 +5,13 @@ public:
 	Bullet();
 	~Bullet();
 	void Start(const D3DXVECTOR3& pos, const D3DXVECTOR3& moveSpeed);
-	bool Update();
+	virtual bool Update();
 	void Render();
-private:
+	D3DXVECTOR3 GetPosition()
+	{
+		return position;
+	}
+protected:
 	SkinModel model;
 	static SkinModelData* modelData;
 	Animation animation;

@@ -144,17 +144,20 @@ void Update()
 		Joint* joint = ballSkelton.GetJoint(eJointPelvis);
 		joint->localPosition.y += 0.01f;
 	}
+	//Ｑ１　キーボードの下が押されたら骨盤が下がるようにする。
 	//胴体を動かす
 	if (GetAsyncKeyState('W')){
 		Joint* joint = ballSkelton.GetJoint(eJointBody);
 		joint->localPosition.y += 0.01f;
 	}
+	//Ｑ２　キーボードのSが押されたら胴体が下がるようにする。
 	if (GetAsyncKeyState('A')) {
 		Joint* joint = ballSkelton.GetJoint(eJointBody);
 		static float angle = 0.0f;
 		D3DXQuaternionRotationAxis(&joint->localRotation, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), angle);
 		angle+=0.01f;
 	}
+	//Ｑ３　キーボードのＤが押されたら胴体が回るようにする。
 
 }
 //-----------------------------------------------------------------------------

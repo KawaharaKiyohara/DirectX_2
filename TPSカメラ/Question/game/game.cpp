@@ -54,6 +54,22 @@ void Game::Start()
 void Game::Update()
 {
 	animation.Update(1.0f / 60.0f);
+	//視点から注視点を減算してtoPosを求める。
+	D3DXVECTOR3 toPos = camera.GetEyePt() - camera.GetLookatPt();
+	//回転行列を作成する。
+	D3DXMATRIX mRot;
+	D3DXMatrixIdentity(&mRot);
+	if (GetAsyncKeyState(VK_LEFT)) {
+		D3DXMatrixRotationY(&mRot,0.1f);
+	}
+	if (GetAsyncKeyState(VK_RIGHT)) {
+		D3DXMatrixRotationY(&mRot, -0.1f);
+	}
+	D3DXVec3TransformCoord(&toPos, &toPos, &mRot);
+	//新しい視点を求めて設定する。
+	D3DXVECTOR3 pos = camera.GetLookatPt() + toPos;
+	camera.SetEyePt(pos);
+
 	camera.Update();
 	model.UpdateWorldMatrix(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXQUATERNION(0.0f, 0.0f, 0.0f, 1.0f), D3DXVECTOR3(1.0f, 1.0f, 1.0f));
 }

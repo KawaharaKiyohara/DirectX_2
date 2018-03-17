@@ -1,3 +1,13 @@
-﻿  game.cpp
-  game.vcxproj -> C:\GitHub\DirectX_2\TPSカメラ\Answer\Debug\game.exe
-  game.vcxproj -> C:\GitHub\DirectX_2\TPSカメラ\Answer\Debug\game.pdb (Full PDB)
+﻿  stdafx.cpp
+  main.cpp
+  System.cpp
+  SkinModelData.cpp
+c:\users\takay\documents\github\directx_2\tpsカメラ\answer\game\lib\skinmodeldata.cpp(320): warning C4316: 'D3DXFRAME_DERIVED': ヒープで割り当てられたオブジェクトが 16 にアラインメントされていない可能性があります
+  SkinModel.cpp
+  EffectManager.cpp
+  Camera.cpp
+  Animation.cpp
+  game.cpp
+  コードを生成中...
+  game.vcxproj -> C:\Users\Takay\Documents\GitHub\DirectX_2\TPSカメラ\Answer\Debug\game.exe
+  game.vcxproj -> C:\Users\Takay\Documents\GitHub\DirectX_2\TPSカメラ\Answer\Debug\game.pdb (Full PDB)

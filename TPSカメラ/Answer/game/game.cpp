@@ -83,18 +83,17 @@ void Game::Update()
 	else if (GetAsyncKeyState(VK_DOWN)) {
 		D3DXMatrixRotationAxis(&mRot, &rotAxis, -0.1f);
 	}
-	
-	
 	//toEyePosを回す。
 	D3DXVECTOR3 toEyePosOld = toEyePos;
 	D3DXVec3TransformCoord(&toEyePos, &toEyePos, &mRot);
 	//上下の回転は制限を設ける。
-	D3DXVECTOR3 toEyePosNormalized;
+	/*D3DXVECTOR3 toEyePosNormalized;
 	D3DXVec3Normalize(&toEyePosNormalized, &toEyePos);
+
 	if (fabsf(toEyePosNormalized.x) < 0.5f && fabsf(toEyePosNormalized.z) < 0.5f) {
 		//可動域を超えている。
 		toEyePos = toEyePosOld;
-	}
+	}*/
 
 	//カメラの視点を決定する。
 	D3DXVECTOR3 eyePos = camera.GetLookatPt();

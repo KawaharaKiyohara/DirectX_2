@@ -7,6 +7,14 @@
 #include <XInput.h> // XInput API
 
 /*!
+*@brief	パッドステート。
+*/
+struct PAD_STATE
+{
+	XINPUT_STATE state;
+	bool bConnected;
+};
+/*!
  * @brief	ゲームパッドクラス。
  */
 class Pad
@@ -95,7 +103,7 @@ public:
 		return m_rStickY;
 	}
 private:
-	XINPUT_STATE	m_state;	//!<パッドステート。
+	PAD_STATE	m_state;	//!<パッドステート。
 	int m_padNo = 0;
 	int m_trigger[enButtonNum];	//!<trigger入力のフラグ。
 	int m_press[enButtonNum];	//!<press入力のフラグ。

@@ -5,6 +5,7 @@
 #include "game.h"
 #include "Enemy.h"
 #include "Bullet.h"
+#include "EnemyBullet.h"
 
 /*!
  * @brief	コンストラクタ。
@@ -70,6 +71,16 @@ void Game::Update()
 			bulletIt++;
 		}
 	}
+	auto enemyBulletIt = enemybullets.begin();
+	while (enemyBulletIt != enemybullets.end()) {
+		if (!(*enemyBulletIt)->Update()) {
+			//死亡。
+			enemyBulletIt = enemybullets.erase(enemyBulletIt);
+		}
+		else {
+			enemyBulletIt++;
+		}
+	}
 	player.Update();
 	camera.Update();
 }
@@ -83,6 +94,9 @@ void Game::Render()
 	}
 	for (auto bullet : playerBullets) {
 		bullet->Render();
+	}
+	for (auto enemyBullet : enemybullets) {
+		enemyBullet->Render();
 	}
 	player.Render();
 }

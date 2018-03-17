@@ -44,12 +44,16 @@ void Player::Update()
 	D3DXVECTOR3 moveDir = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	//パス移動を行う。
 	//プレイヤーの座標をコース定義に射影していく。
-	D3DXVECTOR3 courceDir = g_courceDatas[currentCourceNodeNo].endPos - g_courceDatas[currentCourceNodeNo].startPos;
+	D3DXVECTOR3 courceDir = 
+		g_courceDatas[currentCourceNodeNo].endPos 
+		- g_courceDatas[currentCourceNodeNo].startPos;
 	//コースの長さを求めてから、コースの向きを求める。
 	float len = D3DXVec3Length(&courceDir);
 	D3DXVec3Normalize(&courceDir, &courceDir);
 	//プレイヤーがコース上のどの位置にいるかを調べる。
-	D3DXVECTOR3 playerPosInCourceNode = position - g_courceDatas[currentCourceNodeNo].startPos;
+	D3DXVECTOR3 playerPosInCourceNode = 
+		position 
+		- g_courceDatas[currentCourceNodeNo].startPos;
 	float t = D3DXVec3Dot(&playerPosInCourceNode, &courceDir);
 	//進行方向はコースの向き。
 	moveDir = courceDir;

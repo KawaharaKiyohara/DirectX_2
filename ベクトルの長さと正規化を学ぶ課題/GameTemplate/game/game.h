@@ -8,6 +8,7 @@
 
 class Enemy;
 class Bullet;
+class EnemyBullet;
 
 /*!
  * @brief	ゲームクラス。
@@ -48,11 +49,15 @@ public:
 	{
 		playerBullets.push_back(bullet);
 	}
+	void AddEnemyBullets(EnemyBullet* bullet)
+	{
+		enemybullets.push_back(bullet);
+	}
 	/*!
 	* @brief	プレイヤーが放った弾のリストを取得。
 	* @code
 		サンプルコード
-		const std::list<Bullet*>& bulletList = game->GetPlayerBullet();
+		auto& bulletList = game->GetPlayerBullet();
 		for(auto bullet : bulletList){
 			bullet->Render();
         }
@@ -62,11 +67,16 @@ public:
 	{
 		return playerBullets;
 	}
+	Player& GetPlayer()
+	{
+		return player;
+	}
 private:
 	Camera camera;
 	Player player;
-	std::list<Enemy*> enemyList;	//敵
-	std::list<Bullet*> playerBullets;	//プレイヤーが発射した弾
+	std::list<Enemy*> enemyList;			//敵
+	std::list<Bullet*> playerBullets;		//プレイヤーが発射した弾。
+	std::list<EnemyBullet*> enemybullets;	//敵が発射した弾。
 };
 
 extern Game* game;

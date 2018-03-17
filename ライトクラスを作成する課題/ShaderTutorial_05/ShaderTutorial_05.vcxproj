@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="lib\System.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="lib\System.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Tiger.h" />

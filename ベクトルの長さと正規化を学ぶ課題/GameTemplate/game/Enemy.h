@@ -13,5 +13,6 @@ private:
 	Animation animation;
 	Light light;
 	D3DXVECTOR3 position;
+	int timer = 0;
 };
 

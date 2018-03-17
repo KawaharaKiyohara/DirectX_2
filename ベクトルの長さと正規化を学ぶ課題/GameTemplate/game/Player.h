@@ -7,6 +7,10 @@ public:
 	void Start();
 	void Update();
 	void Render();
+	D3DXVECTOR3 GetPosition()
+	{
+		return position;
+	}
 private:
 	SkinModel model;
 	SkinModelData modelData;

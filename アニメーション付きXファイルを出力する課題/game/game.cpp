@@ -46,7 +46,7 @@ void Game::Start()
 	
 	model.Init(&modelData);
 	model.SetLight(&light);
-	animation.PlayAnimation(0);
+	animation.PlayAnimation(1);
 
 }
 /*!

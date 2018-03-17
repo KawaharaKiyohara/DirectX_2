@@ -64,6 +64,10 @@ public:
 	{
 		return bulletList;
 	}
+	Player* GetPlayer()
+	{
+		return &player;
+	}
 private:
 	GameCamera gameCamera;			//ゲームカメラ。
 	Player player;					//プレイヤー。

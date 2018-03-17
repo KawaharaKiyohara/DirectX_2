@@ -145,8 +145,8 @@ namespace tkEngine{
 							//ボーン行列のアクセスの仕方		g_pBoneMatrices[boneIndex[bone]]
 							//スキンウェイト					orgVertex->blendWeight[bone]
 							///////////////////////////////////////////////////////////////////
-							
-							
+							for (int bone = 0; bone < 2; bone++) {
+							}
 							
 							
 							

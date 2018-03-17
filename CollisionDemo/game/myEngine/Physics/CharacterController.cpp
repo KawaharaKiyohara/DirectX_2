@@ -171,7 +171,7 @@ void CharacterController::Execute()
 			callback.startPos = posTmp;
 			//è’ìÀåüèoÅB
 			g_physicsWorld->ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), start, end, callback);
-
+			Hoge hoge = 0;
 			if (callback.isHit) {
 				//ìñÇΩÇ¡ÇΩÅB
 				//ï«ÅB
@@ -194,18 +194,18 @@ void CharacterController::Execute()
 				vOffset = hitNormalXZ;
 				vOffset *= (-fT0 + m_radius);
 				nextPosition += vOffset;
-				D3DXVECTOR3 currentDir;
-				currentDir = nextPosition - m_position;
-				currentDir.y = 0.0f;
-				D3DXVec3Normalize(&currentDir, &currentDir);
-				
-				if (D3DXVec3Dot( &currentDir, &originalXZDir ) < 0.0f) {
-					//äpÇ…ì¸Ç¡ÇΩéûÇÃÉLÉÉÉâÉNÉ^ÇÃêUìÆÇñhé~Ç∑ÇÈÇΩÇﬂÇ…ÅA
-					//à⁄ìÆêÊÇ™ãtå¸Ç´Ç…Ç»Ç¡ÇΩÇÁà⁄ìÆÇÉLÉÉÉìÉZÉãÇ∑ÇÈÅB
-					nextPosition.x = m_position.x;
-					nextPosition.z = m_position.z;
-					break;
-				}
+			//	D3DXVECTOR3 currentDir;
+			//	currentDir = nextPosition - m_position;
+			//	currentDir.y = 0.0f;
+			//	D3DXVec3Normalize(&currentDir, &currentDir);
+			//	
+			//	if (D3DXVec3Dot( &currentDir, &originalXZDir ) < 0.0f) {
+			//		//äpÇ…ì¸Ç¡ÇΩéûÇÃÉLÉÉÉâÉNÉ^ÇÃêUìÆÇñhé~Ç∑ÇÈÇΩÇﬂÇ…ÅA
+			//		//à⁄ìÆêÊÇ™ãtå¸Ç´Ç…Ç»Ç¡ÇΩÇÁà⁄ìÆÇÉLÉÉÉìÉZÉãÇ∑ÇÈÅB
+			//		nextPosition.x = m_position.x;
+			//		nextPosition.z = m_position.z;
+			//		break;
+			//	}
 			}
 			else {
 				//Ç«Ç±Ç∆Ç‡ìñÇΩÇÁÇ»Ç¢ÇÃÇ≈èIÇÌÇËÅB

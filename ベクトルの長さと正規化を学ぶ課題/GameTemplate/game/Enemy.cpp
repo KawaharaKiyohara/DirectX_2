@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "game.h"
 #include "bullet.h"
+#include "enemyBullet.h"
 
 SkinModelData* Enemy::modelData = NULL;
 
@@ -41,6 +42,34 @@ void Enemy::Start(const D3DXVECTOR3& pos)
 }
 bool Enemy::Update()
 {
+	timer++;
+	if (timer > 20) {
+		timer = 0;
+		EnemyBullet* enemyBullet = new EnemyBullet();
+		enemyBullet->Start(
+			position, 
+			D3DXVECTOR3(0.0f, -0.1f, 0.0f)
+		);
+		game->AddEnemyBullets(enemyBullet);
+	}
+	auto& bulletList = game->GetPlayerBullet();
+	for (auto& bullet : bulletList) {
+		D3DXVECTOR3 diff = 
+			bullet->GetPosition() - position;
+		float len = D3DXVec3Length(&diff);
+		if (len < 0.5f) {
+			//弾と衝突している
+			return false;
+		}
+	}
+	//Question 1 死亡判定を行う。
+	//①弾丸をリストを取ってくる必要がある。
+	//  game.hのGetPlayerBullet関数にサンプルがあるよ。
+	//②弾丸とエネミーの距離を調べる必要があります。
+	//	bulletクラスにはpositionのメンバがあるけど
+	//  privateになっている。
+	//③死亡するときに戻り値をfalseにする。
+	//Question 2 エネミーも球を発射できるようにする。
 	return true;
 }
 void Enemy::Render()
