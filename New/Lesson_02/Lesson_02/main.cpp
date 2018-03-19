@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "SkinModel.h"
-
+#include "Airplane.h"
 ///////////////////////////////////////////////////////////////////
 // グローバル変数。
 ///////////////////////////////////////////////////////////////////
 HWND			g_hWnd = NULL;				//ウィンドウハンドル。
 GraphicsEngine* g_graphicsEngine = NULL;	//グラフィックスエンジン。
 
-SkinModel g_teapotModel;						//ティーポットモデル。
+Airplane g_airplane;							//飛行機。
 
 CMatrix g_viewMatrix = CMatrix::Identity();		//ビュー行列。
 CMatrix g_projMatrix = CMatrix::Identity();		//プロジェクション行列。
@@ -93,15 +93,8 @@ void InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, 
 ///////////////////////////////////////////////////////////////////
 void Update()
 {
-	CVector3 pos = { 0.0f, 0.0f, 0.0f };
-	CQuaternion qRot = { 0.0f, 0.0f, 0.0f, 1.0f };
-	CVector3 scale = { 1.0f, 1.0f, 1.0f };
-	//座標 0, 0, 0, 回転　なし(単位クォータニオン), 拡大 等倍でワールド行列を更新する。
-	g_teapotModel.UpdateWorldMatrix(
-		pos,
-		qRot,
-		scale
-	);
+	//飛行機を更新。
+	g_airplane.Update();
 }
 ///////////////////////////////////////////////////////////////////
 // 毎フレーム呼ばれるゲームの描画処理。
@@ -113,11 +106,9 @@ void Render()
 	///////////////////////////////////////////
 	//ここからモデル表示のプログラム。
 	//3Dモデルを描画する。
-	DirectX::CommonStates state(g_graphicsEngine->GetD3DDevice());
-	g_teapotModel.Draw(
-		g_viewMatrix,							//ビュー行列。
-		g_projMatrix							//プロジェクション行列。
-	);
+
+	g_airplane.Render( g_viewMatrix, g_projMatrix );
+
 	//ここまでモデル表示に関係するプログラム。
 	///////////////////////////////////////////
 	g_graphicsEngine->EndRender();
@@ -139,20 +130,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	//カメラ行列を作成。
 	g_viewMatrix.MakeLookAt(
-		{ 0.0f, 0.0f, 500.0f },		//視点。
-		{ 0.0f, 0.0f, 0.0f },		//注視点。
-		{ 0.0f, 1.0f, 0.0f }		//上方向。
+		{ 0.0f, 3000.0f, 5000.0f },		//視点。
+		{ 0.0f, 1000.0f, 0.0f },		//注視点。
+		{ 0.0f, 1.0f, 0.0f }			//上方向。
 	);
 	//プロジェクション行列を作成。
 	g_projMatrix.MakeProjectionMatrix(
 		CMath::DegToRad(60.0f),				//画角。
 		FRAME_BUFFER_W/FRAME_BUFFER_H ,		//アスペクト比。
 		1.0f,								//近平面。
-		1000.0f								//遠平面。
+		10000.0f								//遠平面。
 	);
-	/////////////////////////////////////////////////////////
-	//ティーポットモデルの初期化。
-	g_teapotModel.Init(L"Resource/modelData/teapot.cmo");
+
+	//飛行機の初期化。
+	g_airplane.Init();
 	
 	//メッセージ構造体の変数msgを初期化。
 	MSG msg = { 0 };
