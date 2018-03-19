@@ -39,12 +39,6 @@
     <ClCompile Include="kMath.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
-    <ClCompile Include="SkinModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -60,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

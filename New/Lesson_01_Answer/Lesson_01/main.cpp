@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "SkinModel.h"
+
 
 ///////////////////////////////////////////////////////////////////
 // グローバル変数。
@@ -7,9 +7,7 @@
 HWND			g_hWnd = NULL;				//ウィンドウハンドル。
 GraphicsEngine* g_graphicsEngine = NULL;	//グラフィックスエンジン。
 
-SkinModel g_teapotModel;						//ティーポットモデル。
-SkinModel g_unitchanModel;						//Unityちゃんモデル。
-
+std::unique_ptr<DirectX::Model> g_model;		//モデル。
 CMatrix g_viewMatrix = CMatrix::Identity();		//ビュー行列。
 CMatrix g_projMatrix = CMatrix::Identity();		//プロジェクション行列。
 CMatrix g_worldMatrix = CMatrix::Identity();	//ワールド行列。
@@ -94,19 +92,6 @@ void InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, 
 ///////////////////////////////////////////////////////////////////
 void Update()
 {
-	CVector3 pos = { -100.0f, 0.0f, 0.0f };
-	CQuaternion qRot = { 0.0f, 0.0f, 0.0f, 1.0f };
-	CVector3 scale = { 1.0f, 1.0f, 1.0f };
-	//座標 0, 0, 0, 回転　なし(単位クォータニオン), 拡大 等倍でワールド行列を更新する。
-	g_teapotModel.UpdateWorldMatrix(
-		pos,
-		qRot,
-		scale
-	);
-	pos.x = 100.0f; 
-	qRot.SetRotationDeg(CVector3::AxisX(), -90.0f);
-	g_unitchanModel.UpdateWorldMatrix(pos, qRot, scale);
-
 }
 ///////////////////////////////////////////////////////////////////
 // 毎フレーム呼ばれるゲームの描画処理。
@@ -115,21 +100,23 @@ void Render()
 {
 	
 	g_graphicsEngine->BegineRender();
+	//X軸周りに-180°回す。
+	g_worldMatrix.MakeRotationX(CMath::PI * -0.5f);
 	///////////////////////////////////////////
 	//ここからモデル表示のプログラム。
 	//3Dモデルを描画する。
 	DirectX::CommonStates state(g_graphicsEngine->GetD3DDevice());
-	g_teapotModel.Draw(
+	g_model->Draw(
+		g_graphicsEngine->GetD3DDeviceContext(),//D3Dデバイスコンテキスト。
+		state,									//レンダリングステート。今は気にしなくてよい。
+		g_worldMatrix,							//ワールド行列。
 		g_viewMatrix,							//ビュー行列。
 		g_projMatrix							//プロジェクション行列。
-	);
-	g_unitchanModel.Draw(
-		g_viewMatrix,
-		g_projMatrix
 	);
 	//ここまでモデル表示に関係するプログラム。
 	///////////////////////////////////////////
 	g_graphicsEngine->EndRender();
+	
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -159,10 +146,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		1000.0f								//遠平面。
 	);
 	/////////////////////////////////////////////////////////
-	//ティーポットモデルの初期化。
-	g_teapotModel.Init(L"Resource/modelData/teapot.cmo");
-	g_unitchanModel.Init(L"Resource/modelData/UnityChan.cmo");
-
+	//ここからcmoファイルのロードに関係するプログラム。
+	//エフェクトファクトリ。
+	DirectX::EffectFactory effectFactory(g_graphicsEngine->GetD3DDevice());
+	//テクスチャがあるフォルダを設定する。
+	effectFactory.SetDirectory(L"Resource/modelData");
+	//CMOファイルのロード。
+	g_model = DirectX::Model::CreateFromCMO(	//CMOファイルからモデルを作成する関数の、CreateFromCMOを実行する。
+		g_graphicsEngine->GetD3DDevice(),			//第一引数はD3Dデバイス。
+		L"Resource/modelData/unityChan.cmo",		//第二引数は読み込むCMOファイルのファイルパス。
+		effectFactory,								//第三引数はエフェクトファクトリ。
+		false										//第四引数はCullモード。今は気にしなくてよい。
+	);
+	//ここまでcmoファイルのロードに関係するプログラム。
+	/////////////////////////////////////////////////////////
 	//メッセージ構造体の変数msgを初期化。
 	MSG msg = { 0 };
 	while (WM_QUIT != msg.message)	//メッセージループ

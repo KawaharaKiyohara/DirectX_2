@@ -550,12 +550,13 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
 
                         auto skinv = reinterpret_cast<VertexPositionNormalTangentColorTextureSkinning*>( ptr );
 						XMUINT4 index = *reinterpret_cast<const XMUINT4*>(skinptr[v].boneIndex);
-#if 0 //スケルトンの処理を入れるまでコメントアウト。100%忘れそう・・・
+#if 0	//スケルトンをやるまではコメントアウト
+
 						index.x = localBoneIDtoGlobalBoneIDTbl[index.x];
 						index.y = localBoneIDtoGlobalBoneIDTbl[index.y];
 						index.z = localBoneIDtoGlobalBoneIDTbl[index.z];
 						index.w = localBoneIDtoGlobalBoneIDTbl[index.w];
-#endif
+#endif			
                         skinv->SetBlendIndices( index );
                         skinv->SetBlendWeights( *reinterpret_cast<const XMFLOAT4*>( skinptr[v].boneWeight ) );
 
